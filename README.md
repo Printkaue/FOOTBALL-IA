@@ -1,4 +1,4 @@
-# Football AI — Ambiente de Futebol 2D com Algoritmo Genetico
+# Football AI — Ambiente de Futebol 2D com Algoritmo Genético
 
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![Pygame](https://img.shields.io/badge/Pygame-2.x-00B140?style=for-the-badge&logo=python&logoColor=white)
