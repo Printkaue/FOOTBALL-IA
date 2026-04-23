@@ -8,7 +8,7 @@ Um ambiente de futebol 2D top-down desenvolvido em Pygame com suporte a controle
 
 ---
 
-## Visao Geral
+## Visão Geral
 
 O projeto é dividido em dois arquivos principais. O `football_env.py` implementa o campo de futebol, a fisica da bola, o jogador e o sistema de recompensas. O `main.py` implementa a rede neural, o algoritmo genetico e a visualizacao do treinamento em tempo real.
 
