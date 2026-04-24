@@ -137,3 +137,15 @@ As ações possiveis sao inteiros de 0 a 5, representando nada, cima, baixo, esq
 - Adicionar um segundo agente para treinamento competitivo
 - Adicionar um agente de goleiro
 - Salvar e carregar os pesos dos melhores agentes
+
+## Hall da história
+
+Aqui temos uma pequena homenagem para os melhores agentes que apareceram durante o treinamneto.
+
+-Genesis-170: Esse grande agente foi o melhor dos primeiros treinos, ná epóca que ele nasceu ainda não havia uma função que permitisse salvar os pesos e preservar o elhor agente. Por este motivo ele se perdeu. Seu fitnnis médio era de 170 pontos e ele conseguiu o recorde de fazer 8 gols durante sua breve vida. Uma verdadeira lenda desse experimento que nunca vai ser esquecida.
+
+            [Geração 113] Avaliando 50 agentes...
+            Melhor fitness : 170.48
+            Fitness médio  : -80.88
+            Mostrando melhor agente por 600 passos...
+

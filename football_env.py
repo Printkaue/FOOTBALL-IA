@@ -109,7 +109,7 @@ class FootballEnv:
         cy = self.field_rect.centery
 
         # Jogador começa no centro-esquerda
-        self.player_pos  = [300 - 120, 200] # padrão [cx - 120, cy]
+        self.player_pos  = [cx - 120, cy] # padrão [cx - 120, cy]
         self.player_dir  = 0.0      # ângulo de orientação (rad), visual only
 
         # Bola começa no centro

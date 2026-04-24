@@ -3,6 +3,7 @@ from settings import ELITE, PASSOS_EPISODIO, POPULACAO, TAXA_MUTACAO, FORCA_MUTA
 import numpy as np
 import pygame
 from football_env import FootballEnv
+from utils import salvar_modelo, carregar_modelo
 
 class AlgoritmoGenetico:
     """
@@ -46,16 +47,14 @@ class AlgoritmoGenetico:
             acao = rede.pensar(obs)
             obs, recompensa, done, info = env.step(acao)
             fitness += recompensa
-
-            #despreza se a ação for nada 
-            if acao == 0:
-                fitness -= 0.5
                 
             if done:
                 break
 
         # Bônus extra por gols (para incentivar mais)
         fitness += info["score"] * 20.0
+
+
         return fitness
 
     def nova_geracao(self):
@@ -72,6 +71,11 @@ class AlgoritmoGenetico:
         media_fitness  = sum(self.fitness) / POPULACAO
         self.historico_fitness.append(melhor_fitness)
         self.historico_media.append(media_fitness)
+
+        #Salvando a melhor rede para treinar mais tarde
+        melhor_rede = self.populacao[ordem[0]]
+        caminho = f"modelos/geracao_{self.geracao:04d}_fit_{melhor_fitness:.1f}.npy"
+        salvar_modelo(melhor_rede, caminho)
 
         nova_pop = []
 
