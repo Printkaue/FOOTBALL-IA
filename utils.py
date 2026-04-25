@@ -6,3 +6,7 @@ def salvar_modelo(rede, caminho):
 def carregar_modelo(caminho, RedeNeural):
     pesos = np.load(caminho)
     return pesos
+
+def carregar_modelo_para_testes(caminho, RedeNeural):
+    pesos = np.load(caminho)
+    return RedeNeural(pesos)

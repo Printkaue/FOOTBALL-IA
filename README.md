@@ -132,11 +132,16 @@ As ações possiveis sao inteiros de 0 a 5, representando nada, cima, baixo, esq
 
 ---
 
+## Para testar agentes especificos basta executar um desses comandos dependendo de sua necessidade
+
+python test_env.py --agente modelos/CR7_F140.npy
+python test_env.py --agente modelos/CR7_F140.npy --modo humano
+python test_env.py --agente1 modelos/A.npy --agente2 modelos/B.npy --modo versus
+
 ## Proximos passos sugeridos
 
 - Adicionar um segundo agente para treinamento competitivo
 - Adicionar um agente de goleiro
-- Salvar e carregar os pesos dos melhores agentes
 
 ## Hall da história
 

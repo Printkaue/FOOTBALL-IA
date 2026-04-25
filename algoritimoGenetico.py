@@ -12,7 +12,7 @@ class AlgoritmoGenetico:
 
     def __init__(self):
         # Cria a população inicial com redes aleatórias
-        self.pesos = carregar_modelo("modelos/CR7_F99.npy", RedeNeural)
+        self.pesos = carregar_modelo("modelos/CR7_F140.npy", RedeNeural)
         self.populacao = [RedeNeural(self.pesos) for _ in range(POPULACAO)] #carrega o melhor modelo
         self.fitness    = [0.0] * POPULACAO
         self.geracao    = 0
