@@ -3,6 +3,7 @@ from settings import ELITE, PASSOS_EPISODIO, POPULACAO, TAXA_MUTACAO, FORCA_MUTA
 import numpy as np
 import pygame
 from football_env import FootballEnv
+from utils import *
 
 class AlgoritmoGenetico:
     """
@@ -11,7 +12,8 @@ class AlgoritmoGenetico:
 
     def __init__(self):
         # Cria a população inicial com redes aleatórias
-        self.populacao = [RedeNeural() for _ in range(POPULACAO)]
+        self.pesos = carregar_modelo("modelos/CR7_F99.npy", RedeNeural)
+        self.populacao = [RedeNeural(self.pesos) for _ in range(POPULACAO)] #carrega o melhor modelo
         self.fitness    = [0.0] * POPULACAO
         self.geracao    = 0
         self.historico_fitness = []   # fitness máximo por geração (para o gráfico)
@@ -72,6 +74,12 @@ class AlgoritmoGenetico:
         media_fitness  = sum(self.fitness) / POPULACAO
         self.historico_fitness.append(melhor_fitness)
         self.historico_media.append(media_fitness)
+
+         #Salvando a melhor rede para treinar mais tarde
+        melhor_rede = self.populacao[ordem[0]]
+        caminho = f"modelos/geracao_{self.geracao:04d}_fit_{melhor_fitness:.1f}.npy"
+        salvar_modelo(melhor_rede, caminho)
+
 
         nova_pop = []
 
