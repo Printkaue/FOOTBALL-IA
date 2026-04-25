@@ -3,11 +3,7 @@ from settings import ELITE, PASSOS_EPISODIO, POPULACAO, TAXA_MUTACAO, FORCA_MUTA
 import numpy as np
 import pygame
 from football_env import FootballEnv
-<<<<<<< HEAD
 from utils import *
-=======
-from utils import salvar_modelo, carregar_modelo
->>>>>>> 4415604d5cc563c3d787e4f797fd5eacc70bd555
 
 class AlgoritmoGenetico:
     """
@@ -52,14 +48,16 @@ class AlgoritmoGenetico:
             acao = rede.pensar(obs)
             obs, recompensa, done, info = env.step(acao)
             fitness += recompensa
+
+            #despreza se a ação for nada 
+            if acao == 0:
+                fitness -= 0.5
                 
             if done:
                 break
 
         # Bônus extra por gols (para incentivar mais)
         fitness += info["score"] * 20.0
-
-
         return fitness
 
     def nova_geracao(self):
@@ -77,19 +75,12 @@ class AlgoritmoGenetico:
         self.historico_fitness.append(melhor_fitness)
         self.historico_media.append(media_fitness)
 
-<<<<<<< HEAD
          #Salvando a melhor rede para treinar mais tarde
-=======
-        #Salvando a melhor rede para treinar mais tarde
->>>>>>> 4415604d5cc563c3d787e4f797fd5eacc70bd555
         melhor_rede = self.populacao[ordem[0]]
         caminho = f"modelos/geracao_{self.geracao:04d}_fit_{melhor_fitness:.1f}.npy"
         salvar_modelo(melhor_rede, caminho)
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 4415604d5cc563c3d787e4f797fd5eacc70bd555
         nova_pop = []
 
         # Elite: os melhores passam sem mudar
