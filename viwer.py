@@ -285,6 +285,7 @@ class Visualizador:
             env._draw_goal()
             env._draw_ball()
             env._draw_player()
+            env._draw_goalkeeper()
             env._draw_hud()
             if env.msg_timer > 0:
                 env._draw_message()

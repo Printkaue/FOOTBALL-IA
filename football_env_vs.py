@@ -45,12 +45,6 @@ PLAYER_SPEED   = settings.PLAYER_SPEED
 KICK_RADIUS    = settings.KICK_RADIUS
 KICK_FORCE     = settings.KICK_FORCE
 
-#goliero
-GOALKEEPER_RADIUS = settings.GOALKEPPER_RADIUS
-GOALKEEPER_COLOR = settings.GOALKEEPER_COLOR
-GOALKEEPER_OUTLINE = settings.GOALKEEPER_OUTLINE
-
-
 # Bola
 BALL_RADIUS  = settings.BALL_RADIUS
 BALL_COLOR   = settings.BALL_COLOR
@@ -114,12 +108,14 @@ class FootballEnv:
         cx = self.field_rect.centerx
         cy = self.field_rect.centery
 
-        # Jogador começa no centro-esquerda
+        # Jogador atacante.
         self.player_pos  = [cx - 120, cy] # padrão [cx - 120, cy]
         self.player_dir  = 0.0      # ângulo de orientação (rad), visual only
 
-        #Goliero começa no gol
-        self.goalkeeper_pos = [cx +240, cy]
+        #Jogador que defende
+        self.playerdef_pos = [cx + 120, cy]
+        self.playerdef_dir = 0.0
+
 
         # Bola começa no centro
         self.ball_pos = [float(cx), float(cy)]
@@ -144,7 +140,6 @@ class FootballEnv:
         """
         reward = 0.0
         self.episode_steps += 1
-        self.goalkeeper_colison_this_step = False
 
         # Movimento do jogador
         dx, dy = 0.0, 0.0
@@ -181,9 +176,6 @@ class FootballEnv:
         # Rebote nas paredes do campo
         self._ball_wall_bounce()
 
-        #Colisão bola com o goleiro
-        self.goalkeeper_ball()
-
         # Colisão jogador-bola (empurrar)
         self._player_ball_collision()
 
@@ -206,7 +198,7 @@ class FootballEnv:
         dist = self._dist(self.player_pos, self.ball_pos)
         reward -= 0.001 * dist
 
-        info = {"score": self.score, "steps": self.episode_steps, "bateu_goleiro": self.goalkeeper_colison_this_step}
+        info = {"score": self.score, "steps": self.episode_steps}
         return self._get_obs(), reward, self.done, info
 
     # ── Observação ───────────────────────────────────────────────────────────
@@ -266,31 +258,6 @@ class FootballEnv:
             self.ball_pos[1] = fr.bottom - br
             self.ball_vel[1] *= -0.7
 
-
-    def goalkeeper_ball(self):
-        dist = self._dist(self.goalkeeper_pos, self.ball_pos)
-        min_dist = GOALKEEPER_RADIUS + BALL_RADIUS
-
-        if dist < min_dist and dist > 0:
-            # Angulo da colisao — da posicao do goleiro ate a bola
-            angle = math.atan2(
-                self.ball_pos[1] - self.goalkeeper_pos[1],
-                self.ball_pos[0] - self.goalkeeper_pos[0]
-            )
-
-            self.goalkeeper_colison_this_step = True
-
-            # Empurra a bola para fora do goleiro (resolve sobreposicao)
-            overlap = min_dist - dist
-            self.ball_pos[0] += math.cos(angle) * overlap
-            self.ball_pos[1] += math.sin(angle) * overlap
-
-            # Rebate a velocidade na direcao oposta
-            # Como o goleiro e estatico, toda a energia volta para a bola
-            speed = math.hypot(self.ball_vel[0], self.ball_vel[1])
-            self.ball_vel[0] = math.cos(angle) * speed * 0.8
-            self.ball_vel[1] = math.sin(angle) * speed * 0.8
-
     def _player_ball_collision(self):
         dist = self._dist(self.player_pos, self.ball_pos)
         min_dist = PLAYER_RADIUS + BALL_RADIUS
@@ -328,7 +295,6 @@ class FootballEnv:
         self._draw_goal()
         self._draw_ball()
         self._draw_player()
-        self._draw_goalkeeper()
         self._draw_hud()
         if self.msg_timer > 0:
             self._draw_message()
@@ -406,22 +372,6 @@ class FootballEnv:
         # Número
         num = self.font_sm.render("10", True, (255, 255, 255))
         s.blit(num, num.get_rect(center=(px, py)))
-
-    def _draw_goalkeeper(self):
-        s = self.screen
-        px, py = int(self.goalkeeper_pos[0]), int(self.goalkeeper_pos[1])
-
-        #sombra
-        pygame.draw.circle(s, (0, 80, 0), (px + 3, py + 3), GOALKEEPER_RADIUS)
-
-        #corpo
-        pygame.draw.circle(s, GOAL_COLOR, (px, py), GOALKEEPER_RADIUS)
-        pygame.draw.circle(s, GOALKEEPER_OUTLINE, (px, py), GOALKEEPER_RADIUS, 3)
-
-        #Numero
-        num = self.font_sm.render("01", True, (255, 255, 255))
-        s.blit(num, num.get_rect(center=(px, py)))
-
 
     def _draw_ball(self):
         s = self.screen

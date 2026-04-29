@@ -12,8 +12,8 @@ class AlgoritmoGenetico:
 
     def __init__(self):
         # Cria a população inicial com redes aleatórias
-        self.pesos = carregar_modelo("modelos/CR7_F140.npy", RedeNeural)
-        self.populacao = [RedeNeural(self.pesos) for _ in range(POPULACAO)] #carrega o melhor modelo
+        self.pesos = carregar_modelo("modelos/Messi_F-28.npy", RedeNeural)
+        self.populacao = [RedeNeural() for _ in range(POPULACAO)] #carrega o melhor modelo
         self.fitness    = [0.0] * POPULACAO
         self.geracao    = 0
         self.historico_fitness = []   # fitness máximo por geração (para o gráfico)
@@ -52,6 +52,9 @@ class AlgoritmoGenetico:
             #despreza se a ação for nada 
             if acao == 0:
                 fitness -= 0.5
+
+            if info["bateu_goleiro"]:
+                fitness -= 2.5
                 
             if done:
                 break

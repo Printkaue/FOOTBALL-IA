@@ -7,7 +7,7 @@ from settings import *
 from agloritimo_genetico_vs import AlgoritmoGeneticoVS
 
 def treinar():
-    ag  = AlgoritmoGenetico()
+    ag  = AlgoritmoGeneticoVS()
     vis = Visualizador()
 
     print("=" * 55)
@@ -66,7 +66,8 @@ def treinar():
         print(f"  Melhor fitness : {melhor_fit:.2f}")
         print(f"  Fitness médio  : {media_fit:.2f}")
 
-        melhor_rede = ag.melhor_agente()
+        melhor_atk = ag.melhor_atacante()
+        melhor_def = ag.melhor_defensor()
 
         # ── Mostra o melhor agente jogando ──
         print(f"  Mostrando melhor agente por {PASSOS_EPISODIO} passos...")
@@ -82,14 +83,14 @@ def treinar():
         for passo in range(PASSOS_EPISODIO):
             vis.processar_eventos()
 
-            acao = melhor_rede.pensar(obs)
+            acao = melhor_atk.pensar(obs)
+            acao2 = melhor_def.pensar(obs)
             obs, _, done, info = vis.env_vis.step(acao)
 
             vis.env_vis._draw_field()
             vis.env_vis._draw_goal()
             vis.env_vis._draw_ball()
             vis.env_vis._draw_player()
-            vis.env_vis._draw_goalkeeper()
             vis.env_vis._draw_hud()
             if vis.env_vis.msg_timer > 0:
                 vis.env_vis._draw_message()
@@ -102,7 +103,7 @@ def treinar():
 
             vis.tela.blit(vis.surf_campo, (0, 0))
             vis.desenhar_painel(
-                melhor_rede,
+                melhor_atk,
                 ag.historico_fitness,
                 ag.historico_media,
                 ag.geracao,
